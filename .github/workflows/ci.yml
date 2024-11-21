@@ -25,7 +25,7 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run Python tests
         if: matrix.language == 'python'
-        run: python -m unittest test_hello_world_python.py
+        run: python -m unittest test_hello.py
 
       - name: Set up Node.js
         if: matrix.language == 'javascript'
@@ -47,10 +47,10 @@ jobs:
           java-version: '17'
       - name: Build C++
         if: matrix.language == 'cpp'
-        run: g++ -std=c++17 hello_world_cpp.cpp -o hello_world_cpp && g++ -std=c++17 test_hello_world_cpp.cpp -lgtest -o test_hello_world_cpp
+        run: g++ -std=c++17 hello.cpp -o hello && g++ -std=c++17 test_hello.cpp -lgtest -o test_hello
       - name: Run C++ tests
         if: matrix.language == 'cpp'
-        run: ./test_hello_world_cpp
+        run: ./test_hello
 
       - name: Set up Java
         if: matrix.language == 'java'
@@ -64,10 +64,10 @@ jobs:
 
       - name: Set up C
         if: matrix.language == 'c'
-        run: gcc hello_world_c.c -o hello_world_c && gcc test_hello_world_c.c -o test_hello_world_c
+        run: gcc hello.c -o hello && gcc test_hello.c -o test_hello
       - name: Run C tests
         if: matrix.language == 'c'
-        run: ./test_hello_world_c
+        run: ./test_hello
 
       - name: Set up Go
         if: matrix.language == 'go'
@@ -86,4 +86,4 @@ jobs:
           ruby-version: '3.2'
       - name: Run Ruby tests
         if: matrix.language == 'ruby'
-        run: bundle exec ruby -I test test/test_hello_world_ruby.rb
+        run: bundle exec ruby -I test test/test_hello.rb
