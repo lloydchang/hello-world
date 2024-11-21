@@ -1,0 +1,98 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        language: [python, javascript, cpp, java, c, go, ruby, swift]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        if: matrix.language == 'python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install Python dependencies
+        if: matrix.language == 'python'
+        run: pip install -r requirements.txt
+      - name: Run Python tests
+        if: matrix.language == 'python'
+        run: python -m unittest test_hello_world_python.py
+
+      - name: Set up Node.js
+        if: matrix.language == 'javascript'
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - name: Install Javascript dependencies
+        if: matrix.language == 'javascript'
+        run: npm install
+      - name: Run Javascript tests
+        if: matrix.language == 'javascript'
+        run: npm test
+
+      - name: Set up C++
+        if: matrix.language == 'cpp'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build C++
+        if: matrix.language == 'cpp'
+        run: g++ -std=c++17 hello_world_cpp.cpp -o hello_world_cpp && g++ -std=c++17 test_hello_world_cpp.cpp -lgtest -o test_hello_world_cpp
+      - name: Run C++ tests
+        if: matrix.language == 'cpp'
+        run: ./test_hello_world_cpp
+
+      - name: Set up Java
+        if: matrix.language == 'java'
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Run Java tests
+        if: matrix.language == 'java'
+        run: ./mvnw test
+
+      - name: Set up C
+        if: matrix.language == 'c'
+        run: gcc hello_world_c.c -o hello_world_c && gcc test_hello_world_c.c -o test_hello_world_c
+      - name: Run C tests
+        if: matrix.language == 'c'
+        run: ./test_hello_world_c
+
+      - name: Set up Go
+        if: matrix.language == 'go'
+        uses: actions/setup-go@v3
+        with:
+          go-version: '1.20'
+      - name: Run Go tests
+        if: matrix.language == 'go'
+        run: go test ./...
+
+
+      - name: Set up Ruby
+        if: matrix.language == 'ruby'
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+      - name: Run Ruby tests
+        if: matrix.language == 'ruby'
+        run: bundle exec ruby -I test test/test_hello_world_ruby.rb
+
+      - name: Set up Swift
+        if: matrix.language == 'swift'
+        uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: '5.8'
+      - name: Run Swift tests
+        if: matrix.language == 'swift'
+        run: swift test
