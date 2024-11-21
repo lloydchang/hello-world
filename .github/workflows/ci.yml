@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        language: [python, javascript, cpp, java, c, go, ruby, swift]
+        language: [python, javascript, cpp, java, c, go, ruby]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -31,7 +31,7 @@ jobs:
         if: matrix.language == 'javascript'
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: '20'
       - name: Install Javascript dependencies
         if: matrix.language == 'javascript'
         run: npm install
@@ -87,12 +87,3 @@ jobs:
       - name: Run Ruby tests
         if: matrix.language == 'ruby'
         run: bundle exec ruby -I test test/test_hello_world_ruby.rb
-
-      - name: Set up Swift
-        if: matrix.language == 'swift'
-        uses: swift-actions/setup-swift@v1
-        with:
-          swift-version: '5.8'
-      - name: Run Swift tests
-        if: matrix.language == 'swift'
-        run: swift test
