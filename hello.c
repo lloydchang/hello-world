@@ -1,3 +1,4 @@
+# explain AI!
 #include <stdio.h>
 
 int main() {
